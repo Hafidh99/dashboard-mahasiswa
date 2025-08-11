@@ -17,7 +17,7 @@
                             <div><span class="label">Tahun Akademik</span>: {{ $tahunAktif->Nama ?? '-' }}</div>
                             <div>
                                 <span class="label">Penasehat Akademik</span>: 
-                                @if ($mahasiswa->pembimbingAkdemik)
+                                @if ($mahasiswa->pembimbingAkademik)
                                     {{ $mahasiswa->pembimbingAkademik->Nama }}, {{ $mahasiswa->pembimbingAkademik->Gelar }}
                                 @else
                                     -
@@ -73,7 +73,7 @@
                                                 <td>
                                                     <form method="POST" action="{{ route('krs.hapus', $krs->KRSID) }}" onsubmit="return confirm('Anda yakin ingin menghapus mata kuliah ini?');">
                                                         @csrf
-                                                        <button type="submit" class="btn btn-red" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Hapus</button>
+                                                        <button type="submit" class="btn btn-red btn-sm">Hapus</button>
                                                     </form>
                                                 </td>
                                             @endif
@@ -92,7 +92,10 @@
                         
                         <div class="action-buttons">
                             @if(!$krsDisetujui)
-                                <a href="{{ route('krs.ambil') }}" class="btn btn-blue">Tambah MK</a>
+                                <form method="POST" action="{{ route('krs.ambil') }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-blue">Tambah MK</button>
+                                </form>
                             @endif
                             <button class="btn btn-green">Cetak KRS</button>
                         </div>
@@ -109,4 +112,3 @@
         </div>
     </div>
 </x-app-layout>
-    
