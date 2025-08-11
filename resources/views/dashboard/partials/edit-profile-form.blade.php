@@ -4,7 +4,6 @@
 
     <div x-data="{ tab: 'pribadi' }" class="card">
         
-        <!-- Tombol Tab -->
         <div class="border-b border-gray-200">
             <nav class="-mb-px flex" aria-label="Tabs">
                 <button type="button" @click="tab = 'pribadi'" :class="{'border-blue-500 text-blue-600': tab === 'pribadi', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': tab !== 'pribadi'}" class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm">Data Pribadi</button>
@@ -12,7 +11,6 @@
             </nav>
         </div>
 
-        <!-- KONTEN TAB DATA PRIBADI -->
         <div x-data="{ isEditing: false }" x-show="tab === 'pribadi'" class="card-content">
             <div class="flex justify-between items-center mb-4">
                 <h4 class="font-bold text-lg">Data Pribadi</h4>
@@ -31,7 +29,6 @@
             </div>
         </div>
 
-        <!-- KONTEN TAB DATA ORANG TUA -->
         <div x-data="{ isEditing: false }" x-show="tab === 'orangtua'" class="card-content" style="display: none;">
             <div class="flex justify-between items-center mb-4">
                 <h4 class="font-bold text-lg">Data Orang Tua</h4>

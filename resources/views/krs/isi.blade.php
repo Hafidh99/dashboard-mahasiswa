@@ -21,7 +21,6 @@
                     </p>
                 </div>
 
-                {{-- Tampilkan notifikasi berdasarkan status --}}
                 @if (!$keuanganLunas)
                     <div class="info-box info-box-red">
                         <p class="font-bold">Perhatian: Administrasi Keuangan</p>

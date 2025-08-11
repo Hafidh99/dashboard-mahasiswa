@@ -39,7 +39,6 @@
                                         <th>Hari</th>
                                         <th>Jam Kuliah</th>
                                         <th>Status KRS</th>
-                                        {{-- Tampilkan kolom Aksi hanya jika KRS belum disetujui --}}
                                         @if(!$krsDisetujui)
                                             <th>Aksi</th>
                                         @endif
@@ -70,7 +69,6 @@
                                                     <span class="krs-status-pending">Menunggu</span>
                                                 @endif
                                             </td>
-                                            {{-- Tampilkan tombol Hapus hanya jika KRS belum disetujui --}}
                                             @if(!$krsDisetujui)
                                                 <td>
                                                     <form method="POST" action="{{ route('krs.hapus', $krs->KRSID) }}" onsubmit="return confirm('Anda yakin ingin menghapus mata kuliah ini?');">
@@ -86,7 +84,6 @@
                                     <tr>
                                         <td colspan="3">Total SKS</td>
                                         <td>{{ $totalSks }}</td>
-                                        {{-- Sesuaikan colspan berdasarkan ada/tidaknya kolom Aksi --}}
                                         <td colspan="{{ $krsDisetujui ? 6 : 7 }}"></td>
                                     </tr>
                                 </tfoot>

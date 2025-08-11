@@ -17,7 +17,7 @@ class KrsController extends Controller
         $tahunAktif = null;
         $bisaIsiKrs = false;
         $sudahIsiKrs = false;
-        $krsDisetujui = false; // Variabel baru untuk status persetujuan
+        $krsDisetujui = false;
         $keuanganLunas = false;
         $sisaTagihan = 0;
 
@@ -41,7 +41,7 @@ class KrsController extends Controller
                 $bisaIsiKrs = true;
             }
 
-            // --- LOGIKA BARU: Cek Status KRS & Persetujuan ---
+            // Cek Status KRS & Persetujuan 
             $khs = DB::table('khs')->where('MhswID', $mahasiswa->MhswID)->where('TahunID', 'like', $tahunAktif->TahunID . '%')->first();
             if ($khs) {
                 // Cek apakah ada MK yang sudah disetujui ('Y')
@@ -212,17 +212,14 @@ class KrsController extends Controller
         $tahunSemester = null;
         $totalSks = 0;
 
-        // Jika ada semester yang dipilih, ambil datanya
         if ($selectedSemester) {
-            // 1. Cari info KHS untuk mendapatkan TahunID dari Sesi yang dipilih
             $khsInfo = DB::table('khs')
                 ->where('MhswID', $mahasiswa->MhswID)
                 ->where('Sesi', $selectedSemester)
                 ->first();
             
-            // 2. Jika KHS ditemukan, ambil detail KRS-nya
             if ($khsInfo) {
-                $tahunSemester = $khsInfo; // Simpan semua info KHS
+                $tahunSemester = $khsInfo; 
                 $krsDetail = DB::table('krs')
                     ->join('jadwal', 'krs.JadwalID', '=', 'jadwal.JadwalID')
                     ->leftJoin('dosen', 'jadwal.DosenID', '=', 'dosen.Login')
@@ -262,18 +259,12 @@ class KrsController extends Controller
     public function hapus($krsId)
     {
         $mahasiswa = Auth::user();
-
-        // Cari entri KRS yang akan dihapus
         $krsEntry = DB::table('krs')->where('KRSID', $krsId)->first();
 
-        // Keamanan: Pastikan entri KRS ada dan milik mahasiswa yang sedang login
         if ($krsEntry && $krsEntry->MhswID == $mahasiswa->MhswID) {
-            // Hapus entri dari database
             DB::table('krs')->where('KRSID', $krsId)->delete();
             return redirect()->back()->with('status', 'Mata kuliah berhasil dihapus.');
         }
-
-        // Jika gagal (misalnya mencoba menghapus milik orang lain), kembali dengan error
         return redirect()->back()->withErrors('Gagal menghapus mata kuliah.');
     }
 

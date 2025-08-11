@@ -1,4 +1,3 @@
-<!-- Modal Ganti Foto -->
 <div x-show="showGantiFotoModal" style="display: none;" class="modal-backdrop">
     <div @click.away="showGantiFotoModal = false" class="modal-panel">
         <h3 class="modal-title">Ganti Foto Profil</h3>
@@ -12,7 +11,6 @@
         </form>
     </div>
 </div>
-<!-- Modal Reset Password -->
 <div x-show="showResetPasswordModal" style="display: none;" class="modal-backdrop">
     <div @click.away="showResetPasswordModal = false" class="modal-panel">
         <h3 class="modal-title">Set Password Baru</h3>
@@ -34,7 +32,6 @@
         </form>
     </div>
 </div>
-<!-- Modal Update PA -->
 <div x-show="showUpdatePaModal" style="display: none;" class="modal-backdrop">
     <div @click.away="showUpdatePaModal = false" class="modal-panel">
         <h3 class="modal-title">Update Pembimbing Akademik</h3>
