@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController; 
 use App\Http\Controllers\KrsController; 
+use App\Http\Controllers\KhsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,9 +31,15 @@ Route::prefix('krs')->name('krs.')->group(function () {
     Route::get('/lihat', [KrsController::class, 'lihat'])->name('lihat');
     Route::get('/isi', [KrsController::class, 'isi'])->name('isi');
     Route::get('/cetak', [KrsController::class, 'cetak'])->name('cetak');
-    Route::post('/isi/ambil', [KrsController::class, 'ambil'])->name('ambil');
+    Route::get('/ambil', [KrsController::class, 'ambil'])->name('ambil');
     Route::post('/simpan', [KrsController::class, 'simpan'])->name('simpan');
     Route::post('/hapus/{krsId}', [KrsController::class, 'hapus'])->name('hapus');
+});
+
+Route::prefix('khs')->name('khs.')->group(function () {
+    Route::get('/cetak', [KhsController::class, 'cetak'])->name('cetak');
+    Route::get('/transkrip', [KhsController::class, 'transkrip'])->name('transkrip');
+    Route::get('/cetak-transkrip-wisuda', [KhsController::class, 'cetakTranskripWisuda'])->name('cetak-transkrip-wisuda');
 });
 
 
