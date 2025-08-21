@@ -39,7 +39,7 @@ Route::prefix('krs')->name('krs.')->group(function () {
 Route::prefix('khs')->name('khs.')->group(function () {
     Route::get('/cetak', [KhsController::class, 'cetak'])->name('cetak');
     Route::get('/transkrip', [KhsController::class, 'transkrip'])->name('transkrip');
-    Route::get('/cetak-transkrip-wisuda', [KhsController::class, 'cetakTranskripWisuda'])->name('cetak-transkrip-wisuda');
+    Route::get('/cetak-transkrip-wisuda', [KhsController::class, 'transkripWisuda'])->name('cetak-transkrip-wisuda');
 });
 
 

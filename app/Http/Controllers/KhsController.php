@@ -113,6 +113,7 @@ class KhsController extends Controller
                 }
             }
         }
+        
 
         return view('khs.transkrip', [
             'mahasiswa' => $mahasiswa,
@@ -123,6 +124,57 @@ class KhsController extends Controller
             'totalSksKumulatif' => $totalSksKumulatif,
             'totalMutuKumulatif' => $totalMutuKumulatif,
             'ipk' => $ipk,
+        ]);
+    }
+    public function transkripWisuda()
+    {
+        $mahasiswa = Auth::user()->load('prodi');
+
+        // Ambil semua KHS ID milik mahasiswa
+        $khsIds = DB::table('khs')
+            ->where('MhswID', $mahasiswa->MhswID)
+            ->pluck('KHSID');
+
+        $transkripLengkap = collect();
+        if ($khsIds->isNotEmpty()) {
+            $transkripLengkap = DB::table('krs')
+                ->join('khs', 'krs.KHSID', '=', 'khs.KHSID')
+                ->whereIn('krs.KHSID', $khsIds)
+                // PERBAIKAN DI SINI: Memberi tahu database untuk menggunakan kolom NA dari tabel krs
+                ->where('krs.NA', 'N') 
+                ->select(
+                    'krs.MKKode', 
+                    'krs.Nama', 
+                    'krs.SKS', 
+                    'krs.GradeNilai',
+                    'krs.BobotNilai',
+                    DB::raw('krs.SKS * krs.BobotNilai as Mutu')
+                )
+                ->orderBy('khs.Sesi', 'asc')
+                ->orderBy('krs.MKKode', 'asc')
+                ->get();
+        }
+        
+        // Hitung total SKS dan Mutu kumulatif
+        $totalSks = $transkripLengkap->sum('SKS');
+        $totalMutu = $transkripLengkap->sum('Mutu');
+        $ipk = ($totalSks > 0) ? $totalMutu / $totalSks : 0;
+
+        // Data tambahan (gunakan data asli jika ada di database Anda)
+        $dataWisuda = [
+            'tanggalMasuk' => '2020-09-01', // Placeholder
+            'tanggalLulus' => '2024-08-20', // Placeholder
+            'predikat' => 'Sangat Memuaskan', // Placeholder
+            'judulSkripsi' => 'ANALISIS FAKTOR-FAKTOR YANG MEMPENGARUHI KINERJA AKADEMIK MAHASISWA FAKULTAS KESEHATAN MASYARAKAT', // Placeholder
+        ];
+
+        // Kirim data ke view khusus cetak
+        return view('khs.transkrip-wisuda', [
+            'mahasiswa' => $mahasiswa,
+            'transkripLengkap' => $transkripLengkap,
+            'totalSks' => $totalSks,
+            'ipk' => $ipk,
+            'dataWisuda' => $dataWisuda,
         ]);
     }
 }
