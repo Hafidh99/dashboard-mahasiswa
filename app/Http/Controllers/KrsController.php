@@ -1,4 +1,5 @@
 <?php
+// File: app/Http/Controllers/KrsController.php
 
 namespace App\Http\Controllers;
 
@@ -10,6 +11,7 @@ use App\Models\Khs;
 
 class KrsController extends Controller
 {
+    // ... (metode isi(), ambil(), simpan(), lihat(), hapus() tidak perlu diubah) ...
     public function isi()
     {
         $mahasiswa = Auth::user();
@@ -21,7 +23,6 @@ class KrsController extends Controller
         $keuanganLunas = false;
         $sisaTagihan = 0;
 
-        // Pengecekan Keuangan (tetap sama)
         $summaryKeuangan = DB::table('khs')->where('MhswID', $mahasiswa->MhswID)->selectRaw('SUM(Biaya) as total_biaya, SUM(Potongan) as total_potongan, SUM(Bayar) as total_bayar')->first();
         if ($summaryKeuangan) {
             $sisaTagihan = $summaryKeuangan->total_biaya - $summaryKeuangan->total_potongan - $summaryKeuangan->total_bayar;
@@ -30,34 +31,28 @@ class KrsController extends Controller
             }
         }
 
-        // Cari tahun akademik yang aktif (tetap sama)
         $tahunAktif = DB::table('tahun')->where('ProdiID', $mahasiswa->ProdiID)->where('NA', 'N')->first();
 
         if ($tahunAktif) {
-            // Cek periode pengisian KRS (tetap sama)
             $tglMulai = Carbon::parse($tahunAktif->TglKRSMulai);
             $tglSelesai = Carbon::parse($tahunAktif->TglKRSSelesai)->endOfDay();
             if ($today->between($tglMulai, $tglSelesai)) {
                 $bisaIsiKrs = true;
             }
 
-            // Cek Status KRS & Persetujuan 
             $khs = DB::table('khs')->where('MhswID', $mahasiswa->MhswID)->where('TahunID', 'like', $tahunAktif->TahunID . '%')->first();
             if ($khs) {
-                // Cek apakah ada MK yang sudah disetujui ('Y')
                 $krsDisetujui = DB::table('krs')
                                 ->where('KHSID', $khs->KHSID)
                                 ->where('aprv_pa', 'Y')
                                 ->exists();
 
-                // Cek apakah sudah ada MK yang diambil (meski belum disetujui)
                 $jumlahMKDiambil = DB::table('krs')->where('KHSID', $khs->KHSID)->count();
                 if ($jumlahMKDiambil > 0) {
                     $sudahIsiKrs = true;
                 }
             }
             
-            // Final check: Batalkan semua izin jika keuangan belum lunas atau KRS sudah disetujui
             if (!$keuanganLunas || $krsDisetujui) {
                 $bisaIsiKrs = false;
             }
@@ -90,10 +85,13 @@ class KrsController extends Controller
                         ->select('jadwal.*', 'dosen.Nama as NamaDosen', 'dosen.Gelar')
                         ->orderBy('jadwal.Nama')
                         ->get();
+        
+        $hari = ['', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
         return view('krs.ambil', [
             'tahunAktif' => $tahunAktif,
             'mataKuliah' => $mataKuliah,
+            'hari' => $hari,
         ]);
     }
 
@@ -199,18 +197,25 @@ class KrsController extends Controller
         ]);
     }
 
+    /**
+     * =================================================================
+     * === PERUBAHAN UTAMA ADA DI METHOD INI ===
+     * =================================================================
+     */
     public function cetak(Request $request)
     {
-        $mahasiswa = Auth::user()->load('prodi');
+        $mahasiswa = Auth::user()->load('prodi', 'pembimbingAkademik');
         $semesterList = DB::table('khs')
-                        ->where('MhswID', $mahasiswa->MhswID)
-                        ->orderBy('Sesi', 'desc')
-                        ->pluck('Sesi');
+                            ->where('MhswID', $mahasiswa->MhswID)
+                            ->orderBy('Sesi', 'desc')
+                            ->distinct()
+                            ->pluck('Sesi');
 
         $selectedSemester = $request->input('semester');
         $krsDetail = collect();
         $tahunSemester = null;
         $totalSks = 0;
+        $krsDisetujui = false; // Inisialisasi variabel
 
         if ($selectedSemester) {
             $khsInfo = DB::table('khs')
@@ -241,10 +246,12 @@ class KrsController extends Controller
                     ->get();
                 
                 $totalSks = $krsDetail->sum('SKS');
+                
+                // === LOGIKA BARU DITAMBAHKAN DI SINI ===
+                // Cek apakah ada satu saja matkul yang sudah disetujui ('Y')
+                $krsDisetujui = $krsDetail->contains('aprv_pa', 'Y');
             }
         }
-
-        
 
         return view('krs.cetak', [
             'mahasiswa' => $mahasiswa,
@@ -253,6 +260,7 @@ class KrsController extends Controller
             'tahunSemester' => $tahunSemester,
             'krsDetail' => $krsDetail,
             'totalSks' => $totalSks,
+            'krsDisetujui' => $krsDisetujui, // Kirim variabel ini ke view
         ]);
     }
     
@@ -267,5 +275,4 @@ class KrsController extends Controller
         }
         return redirect()->back()->withErrors('Gagal menghapus mata kuliah.');
     }
-
 }

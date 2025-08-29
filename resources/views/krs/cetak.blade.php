@@ -32,10 +32,14 @@
             }
             #print-area th,
             #print-area td {
-                border: 1px solid black;
+                border: 1px solid black !important; 
                 padding: 3px 6px;
                 font-size: 9px;
                 text-align: left;
+            }
+            #print-area thead,
+            #print-area tfoot {
+                background-color: white !important;
             }
             #print-area th:nth-child(1), #print-area td:nth-child(1) { width: 3%; text-align: center; }
             #print-area th:nth-child(2), #print-area td:nth-child(2) { width: 8%; }
@@ -81,7 +85,7 @@
                                     <div class="text-center">
                                         <p class="text-xl font-bold">UNIVERSITAS HANG TUAH PEKANBARU</p>
                                         <p class="text-sm">Jl. Mustafa Sari No. 05 Tangkerang Selatan, Telp. (0761) 77015, Fax. (0761) 861646</p>
-                                        <p class="text-sm">Email: universitas@htp.ac.id atau Pendaftaran: 22INFO-2002 Website: http://www.htp.ac.id</p>
+                                        <p class="text-sm">Email: universitas@htp.ac.id atau Pendaftaran: 22INFO-2002 Website: [http://www.htp.ac.id](http://www.htp.ac.id)</p>
                                     </div>
                                 </div>
                                 <h3 class="text-center font-bold text-lg mt-6 mb-4 underline">KARTU RENCANA STUDI</h3>
@@ -99,9 +103,8 @@
                                 </div>
                             </div>
 
-                            <!-- Tabel KRS -->
-                            <div class="overflow-x-auto border border-gray-200 rounded-lg print:border-none print:rounded-none">
-                                <table class="min-w-full divide-y divide-gray-200 print:divide-none">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
                                     <thead class="bg-gray-50">
                                         <tr>
                                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
@@ -114,7 +117,7 @@
                                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Jam Kuliah</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200 print:divide-none">
+                                    <tbody class="bg-white divide-y divide-gray-200">
                                         @php $hari = ['', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']; @endphp
                                         @foreach ($krsDetail as $krs)
                                         <tr>
@@ -159,10 +162,17 @@
                             </div>
                             
                             <div class="mt-6 flex justify-end print:hidden">
-                                <button onclick="window.print()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                                    Print KRS
-                                </button>
+                                @if($krsDisetujui)
+                                    <button onclick="window.print()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                                        Print KRS
+                                    </button>
+                                @else
+                                    <button disabled title="KRS harus disetujui oleh PA untuk bisa dicetak" class="inline-flex items-center px-4 py-2 bg-gray-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest cursor-not-allowed">
+                                        Print KRS
+                                    </button>
+                                @endif
                             </div>
+
                         @elseif($selectedSemester)
                             <div class="text-center py-16 text-gray-500">
                                 <p>Tidak ada data KRS yang ditemukan untuk semester {{ $selectedSemester }}.</p>

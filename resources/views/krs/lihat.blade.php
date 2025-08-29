@@ -173,10 +173,14 @@
                                 <a href="{{ route('krs.ambil') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
                                     Tambah MK
                                 </a>
+                                <button disabled title="KRS harus disetujui oleh PA untuk bisa dicetak" class="inline-flex items-center px-4 py-2 bg-gray-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest cursor-not-allowed">
+                                    Cetak KRS
+                                </button>
+                            @else
+                                <button onclick="window.print()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                                    Cetak KRS
+                                </button>
                             @endif
-                            <button onclick="window.print()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                                Cetak KRS
-                            </button>
                         @endif
                     </div>
                 </div>
