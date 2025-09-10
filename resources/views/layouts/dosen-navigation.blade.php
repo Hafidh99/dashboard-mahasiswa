@@ -29,7 +29,7 @@
                                 <x-dropdown-link :href="route('dosen.pa.list')">
                                     {{ __('List PA') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link href="#">
+                                <x-dropdown-link href="{{ route('dosen.jadwal.index') }}">
                                     {{ __('Jadwal') }}
                                 </x-dropdown-link>
                             </x-slot>

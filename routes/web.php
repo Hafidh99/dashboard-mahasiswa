@@ -7,6 +7,8 @@ use App\Http\Controllers\KrsController;
 use App\Http\Controllers\KhsController;
 use App\Http\Controllers\Auth\DosenLoginController;
 use App\Http\Controllers\Dosen\PaController;
+use App\Http\Controllers\Dosen\JadwalController;
+use App\Http\Controllers\Dosen\LaporanController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -45,24 +47,31 @@ Route::prefix('khs')->name('khs.')->group(function () {
 });
 
 Route::prefix('dosen')->name('dosen.')->group(function () {
-    
-    // TAMBAHKAN GRUP INI
+
     Route::middleware('guest')->group(function () {
         Route::get('login', [DosenLoginController::class, 'create'])->name('login');
         Route::post('login', [DosenLoginController::class, 'store'])->name('login.store');
     });
-
-    // Grup ini untuk route yang hanya bisa diakses setelah login
+    
     Route::middleware('auth:dosen')->group(function() {
-        Route::get('dashboard', function() {
-            return view('dosen.dashboard');
-        })->name('dashboard');
-
+        Route::get('dashboard', function() {return view('dosen.dashboard');})->name('dashboard');
         Route::get('pa/proses/{khsId}', [PaController::class, 'showKrsMahasiswa'])->name('pa.proses');
         Route::post('pa/proses/{khsId}', [PaController::class, 'processKrs'])->name('pa.process.store');
         Route::get('pa/list', [PaController::class, 'index'])->name('pa.list');
         Route::post('logout', [DosenLoginController::class, 'destroy'])->name('logout');
+        Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
+        Route::get('/jadwal/{jadwal}/presensi', [\App\Http\Controllers\Dosen\PresensiController::class, 'index'])->name('jadwal.presensi.index');
+        Route::post('/jadwal/{jadwal}/presensi', [\App\Http\Controllers\Dosen\PresensiController::class, 'store'])->name('jadwal.presensi.store');
+        Route::put('/presensi/{presensi}', [\App\Http\Controllers\Dosen\PresensiController::class, 'update'])->name('presensi.update');
+        Route::delete('/presensi/{presensi}', [\App\Http\Controllers\Dosen\PresensiController::class, 'destroy'])->name('presensi.destroy');
+        Route::get('/presensi/{presensi}/absen', [\App\Http\Controllers\Dosen\PresensiController::class, 'editAbsen'])->name('presensi.absen.edit');
+        Route::post('/presensi/{presensi}/absen', [\App\Http\Controllers\Dosen\PresensiController::class, 'updateAbsen'])->name('presensi.absen.update');
+        Route::get('/jadwal/{jadwal}/rekap-absen', [\App\Http\Controllers\Dosen\LaporanController::class, 'rekapAbsenMahasiswa'])->name('jadwal.rekap.absen');
+        Route::get('/jadwal/{jadwal}/rekap-presensi-dosen', [\App\Http\Controllers\Dosen\LaporanController::class, 'rekapPresensiDosen'])->name('jadwal.rekap.presensi.dosen');
+        Route::get('/jadwal/{jadwal}/cetak-nilai', [\App\Http\Controllers\Dosen\LaporanController::class, 'cetakNilai'])->name('jadwal.cetak.nilai');
+        Route::get('/jadwal/{jadwal}/cetak-detail-nilai', [\App\Http\Controllers\Dosen\LaporanController::class, 'cetakDetailNilai'])->name('jadwal.cetak.detail_nilai');
     });
 });
+
 
 require __DIR__.'/auth.php';
