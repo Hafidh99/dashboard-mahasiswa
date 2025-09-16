@@ -10,23 +10,47 @@ class JadwalNgajarDosen extends Model
     use HasFactory;
 
     /**
-     * Nama tabel yang terhubung dengan model ini.
+     * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'jadwal';
-
+    protected $table = 'jadwal'; 
     /**
-     * Primary key dari tabel.
+     * The primary key associated with the table.
      *
      * @var string
      */
     protected $primaryKey = 'JadwalID';
-
     /**
-     * Menunjukkan apakah model harus menggunakan timestamps (created_at, updated_at).
+     * Indicates if the model's ID is auto-incrementing.
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $incrementing = true;
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false; 
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'Presensi',
+        'TugasMandiri',
+        'Tugas1',
+        'Tugas2',
+        'Tugas3',
+        'Tugas4',       
+        'Tugas5',
+        'UTS',
+        'UAS',
+        'Responsi',     
+        'CatatanGagal', 
+    ];
 }

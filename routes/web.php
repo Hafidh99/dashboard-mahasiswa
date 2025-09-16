@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\DosenLoginController;
 use App\Http\Controllers\Dosen\PaController;
 use App\Http\Controllers\Dosen\JadwalController;
 use App\Http\Controllers\Dosen\LaporanController;
+use App\Http\Controllers\Dosen\NilaiMahasiswaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -70,6 +71,10 @@ Route::prefix('dosen')->name('dosen.')->group(function () {
         Route::get('/jadwal/{jadwal}/rekap-presensi-dosen', [\App\Http\Controllers\Dosen\LaporanController::class, 'rekapPresensiDosen'])->name('jadwal.rekap.presensi.dosen');
         Route::get('/jadwal/{jadwal}/cetak-nilai', [\App\Http\Controllers\Dosen\LaporanController::class, 'cetakNilai'])->name('jadwal.cetak.nilai');
         Route::get('/jadwal/{jadwal}/cetak-detail-nilai', [\App\Http\Controllers\Dosen\LaporanController::class, 'cetakDetailNilai'])->name('jadwal.cetak.detail_nilai');
+        Route::get('/jadwal/{jadwal}/bobot-nilai', [\App\Http\Controllers\Dosen\BobotNilaiController::class, 'edit'])->name('jadwal.bobot.edit');
+        Route::put('/jadwal/{jadwal}/bobot-nilai', [\App\Http\Controllers\Dosen\BobotNilaiController::class, 'update'])->name('jadwal.bobot.update');
+        Route::put('/jadwal/{jadwal}/input-nilai', [\App\Http\Controllers\Dosen\NilaiMahasiswaController::class, 'update'])->name('jadwal.nilai.update');
+        Route::get('/jadwal/{jadwal}/input-nilai', [\App\Http\Controllers\Dosen\NilaiMahasiswaController::class, 'edit'])->name('jadwal.nilai.edit');
     });
 });
 

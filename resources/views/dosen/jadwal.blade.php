@@ -74,8 +74,8 @@ Jadwal Mengajar Dosen: {{ $namaDosen }}
                                         <a href="{{ route('dosen.jadwal.rekap.presensi.dosen', $jadwal->JadwalID) }}" target="_blank" class="inline-block px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">Batas Absen</a>
                                     </td>
                                     <td class="px-4 py-4 text-center text-sm space-y-1">
-                                        <a href="#" class="inline-block px-3 py-1 bg-slate-500 text-white text-xs rounded hover:bg-slate-600">Input Nilai</a>
-                                        <a href="#" class="inline-block px-3 py-1 bg-teal-500 text-white text-xs rounded hover:bg-teal-600">Set Bobot Penilaian</a>
+                                        <a href="{{ route('dosen.jadwal.nilai.edit', ['jadwal' => $jadwal->JadwalID]) }}" class="inline-block px-3 py-1 bg-slate-500 text-white text-xs rounded hover:bg-slate-600">Input Nilai</a>
+                                        <a href="{{ route('dosen.jadwal.bobot.edit', $jadwal->JadwalID) }}" class="inline-block px-3 py-1 bg-teal-500 text-white text-xs rounded hover:bg-teal-600">Set Bobot Penilaian</a>
                                         <a href="{{ route('dosen.jadwal.cetak.nilai', $jadwal->JadwalID) }}" class="inline-block px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">Cetak Nilai</a>
                                         <a href="{{ route('dosen.jadwal.cetak.detail_nilai', $jadwal->JadwalID) }}" class="inline-block px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">Cetak Detail Nilai</a>
                                     </td>
