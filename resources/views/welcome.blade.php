@@ -34,8 +34,7 @@
                             {{-- Tombol Login Mahasiswa --}}
                             <a
                                 href="{{ route('login') }}"
-                                class="inline-block px-5 py-1.5 dark:text-gray-200 text-gray-800 border border-transparent hover:border-gray-300 dark:hover:border-gray-700 rounded-sm text-sm leading-normal"
-                            >
+                                class="inline-block px-5 py-1.5 dark:text-gray-200 border-gray-700 hover:border-gray-600 border text-gray-800 dark:border-gray-600 dark:hover:border-gray-400 rounded-sm text-sm leading-normal">
                                 Login Mahasiswa
                             </a>
 
@@ -44,6 +43,13 @@
                                 href="{{ route('dosen.login') }}"
                                 class="inline-block px-5 py-1.5 dark:text-gray-200 border-gray-700 hover:border-gray-600 border text-gray-800 dark:border-gray-600 dark:hover:border-gray-400 rounded-sm text-sm leading-normal">
                                 Login Dosen
+                            </a>
+                            
+                            <!-- TOMBOL BARU ANDA UNTUK KARYAWAN -->
+                            <a
+                                href="{{ route('karyawan.login') }}"
+                                class="inline-block px-5 py-1.5 dark:text-gray-200 border-gray-700 hover:border-gray-600 border text-gray-800 dark:border-gray-600 dark:hover:border-gray-400 rounded-sm text-sm leading-normal">
+                                Login Karyawan
                             </a>
                         @endauth
                     </nav>

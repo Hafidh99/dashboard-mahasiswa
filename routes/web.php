@@ -10,6 +10,9 @@ use App\Http\Controllers\Dosen\PaController;
 use App\Http\Controllers\Dosen\JadwalController;
 use App\Http\Controllers\Dosen\LaporanController;
 use App\Http\Controllers\Dosen\NilaiMahasiswaController;
+use App\Http\Controllers\Dosen\PresensiController;
+use App\Http\Controllers\Auth\KaryawanLoginController; 
+use App\Http\Controllers\Karyawan\JadwalKaryawanController; 
 
 Route::get('/', function () {
     return view('welcome');
@@ -78,5 +81,30 @@ Route::prefix('dosen')->name('dosen.')->group(function () {
     });
 });
 
+Route::prefix('karyawan')->name('karyawan.')->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::get('login', [KaryawanLoginController::class, 'create'])->name('login');
+        Route::post('login', [KaryawanLoginController::class, 'store'])->name('login.store');
+    });
+    
+    Route::middleware('auth:karyawan')->group(function() {
+        Route::get('dashboard', [JadwalKaryawanController::class, 'dashboard'])->name('dashboard');
+        Route::get('jadwal', [JadwalKaryawanController::class, 'index'])->name('jadwal.index');
+        Route::post('jadwal', [JadwalKaryawanController::class, 'storeJadwal'])->name('jadwal.store');
+        Route::post('kelas', [JadwalKaryawanController::class, 'storeKelas'])->name('kelas.store');
+        Route::put('jadwal/{id}', [JadwalKaryawanController::class, 'update'])->name('jadwal.update');
+        Route::get('jadwal/{id}/edit', [JadwalKaryawanController::class, 'edit'])->name('jadwal.edit');
+        Route::delete('jadwal/{id}', [JadwalKaryawanController::class, 'destroy'])->name('jadwal.destroy');
+        Route::get('jadwal/{id}/cetak', [JadwalKaryawanController::class, 'cetak'])->name('jadwal.cetak');
+        Route::get('jadwal/{id}/json', [JadwalKaryawanController::class, 'getJadwalJson'])->name('jadwal.json');
+        Route::get('jadwal/{id}/edit-dosen', [JadwalKaryawanController::class, 'editDosen'])->name('jadwal.editDosen');
+        Route::post('jadwal/{id}/update-dosen', [JadwalKaryawanController::class, 'updateDosen'])->name('jadwal.updateDosen');
+        // Rute untuk live search
+        Route::get('search/ruang', [JadwalKaryawanController::class, 'searchRuang'])->name('ruang.search');
+        Route::get('search/matakuliah', [JadwalKaryawanController::class, 'searchMatakuliah'])->name('matakuliah.search');
+        Route::get('search/dosen', [JadwalKaryawanController::class, 'searchDosen'])->name('dosen.search');
+        Route::post('logout', [KaryawanLoginController::class, 'destroy'])->name('logout');
+    });
+});
 
 require __DIR__.'/auth.php';

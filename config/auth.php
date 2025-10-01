@@ -45,6 +45,10 @@ return [
             'driver' => 'session',
             'provider' => 'dosens',
         ],
+        'karyawan' => [
+            'driver' => 'session',
+            'provider' => 'karyawans', // Nama provider baru kita
+        ],
     ],
 
     /*
@@ -73,6 +77,10 @@ return [
         'dosens' => [
             'driver' => 'eloquent',
             'model' => App\Models\Dosen::class,
+        ],
+        'karyawans' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Karyawan::class, // Model baru yang akan kita buat
         ],
         // 'users' => [
         //     'driver' => 'database',

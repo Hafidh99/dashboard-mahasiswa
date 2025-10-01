@@ -1,9 +1,8 @@
 import './bootstrap';
-
 import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
-
 Alpine.start();
 
 import './dashboard-chart.js'; 
+import './jadwal-search.js';
