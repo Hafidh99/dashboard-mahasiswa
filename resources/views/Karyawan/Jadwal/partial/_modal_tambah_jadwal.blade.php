@@ -43,7 +43,7 @@
                                 <input type="time" name="jam_selesai" class="block w-full rounded-md border-gray-300 shadow-sm text-sm">
                             </div>
                         </div>
-                         <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-medium text-gray-700">Ruang</label>
                                 <div class="flex items-center">
@@ -59,12 +59,12 @@
                     </div>
 
                     <div class="border-b pb-4">
-                         <label class="block text-sm font-medium text-gray-700 mb-1">Matakuliah</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Matakuliah</label>
                         <div class="flex items-center">
                             <input type="hidden" name="mk_id" id="mk_id_input">
                             <input type="text" name="mk_kode" id="mk_kode_input" class="block w-24 bg-gray-100 rounded-l-md border-gray-300 shadow-sm text-sm" readonly>
                             <input type="text" name="mk_nama" id="mk_nama_input" class="block w-full bg-gray-100 border-gray-300 shadow-sm text-sm" readonly>
-                             <input type="text" name="mk_sks" id="mk_sks_input" class="block w-16 bg-gray-100 border-gray-300 shadow-sm text-sm text-center" readonly placeholder="SKS">
+                            <input type="text" name="mk_sks" id="mk_sks_input" class="block w-16 bg-gray-100 border-gray-300 shadow-sm text-sm text-center" readonly placeholder="SKS">
                             <button type="button" id="cariMkBtn" class="px-3 py-2 bg-gray-200 text-gray-700 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-300">Cari...</button>
                         </div>
                         <div class="mt-2">
@@ -78,16 +78,16 @@
                     <div class="border-b pb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Dosen Pengampu</label>
                         <div class="flex items-center">
-                             <input type="hidden" name="dosen_id" id="dosen_id_input">
+                            <input type="hidden" name="dosen_id" id="dosen_id_input">
                             <input type="text" name="dosen_display" id="dosen_display_input" class="block w-full bg-gray-100 rounded-l-md border-gray-300 shadow-sm text-sm" readonly>
                             <button type="button" id="cariDosenBtn" class="px-3 py-2 bg-gray-200 text-gray-700 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-300">Cari...</button>
                         </div>
                     </div>
-                   
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b pb-4">
                         <div class="md:col-span-1">
                             <label class="block text-sm font-medium text-gray-700">Kelas</label>
-                             <select name="kelas_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm">
+                            <select name="kelas_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm">
                                 <option value="">-- Pilih Kelas --</option>
                                 @foreach($semuaKelas as $kelas)
                                 <option value="{{ $kelas->KelasID }}">{{ $kelas->Nama }}</option>
@@ -106,7 +106,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                         <div>
-                             <label class="inline-flex items-center">
+                            <label class="inline-flex items-center">
                                 <input type="checkbox" id="adaBiayaKhusus" name="ada_biaya" class="rounded border-gray-300 text-indigo-600 shadow-sm">
                                 <span class="ml-2 text-sm text-gray-600">Ada Biaya Khusus?</span>
                             </label>
@@ -116,7 +116,7 @@
                                 <label class="block text-sm font-medium text-gray-700">Biaya</label>
                                 <input type="number" name="biaya" id="inputBiaya" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm bg-gray-100" disabled>
                             </div>
-                             <div>
+                            <div>
                                 <label class="block text-sm font-medium text-gray-700">Nama Biaya</label>
                                 <input type="text" name="nama_biaya" id="inputNamaBiaya" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm bg-gray-100" disabled>
                             </div>

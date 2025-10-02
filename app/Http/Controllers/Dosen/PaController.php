@@ -78,10 +78,6 @@ class PaController extends Controller
         $totalSks = $krsDetail->sum('SKS');
         $isApproved = $krsDetail->isNotEmpty() && $krsDetail->first()->aprv_pa == 'Y';
 
-        // =================================================================
-        // PERBAIKAN: Mengadopsi logika dari DashboardController
-        // =================================================================
-
         // 1. Mengambil data riwayat studi untuk perhitungan grafik
         $riwayatStudi = DB::table('krs')
             ->join('khs', 'krs.KHSID', '=', 'khs.KHSID')
@@ -126,7 +122,7 @@ class PaController extends Controller
             'totalSks' => $totalSks,
             'isApproved' => $isApproved,
             'riwayatKeuangan' => $riwayatKeuangan,
-            'riwayatStudi' => $riwayatStudi, // <-- Mengirim data riwayat studi ke view
+            'riwayatStudi' => $riwayatStudi, 
             'labels' => $labels,
             'dataIPS' => $dataIPS,
             'dataIPK' => $dataIPK,

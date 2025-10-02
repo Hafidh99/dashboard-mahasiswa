@@ -13,6 +13,7 @@ use App\Http\Controllers\Dosen\NilaiMahasiswaController;
 use App\Http\Controllers\Dosen\PresensiController;
 use App\Http\Controllers\Auth\KaryawanLoginController; 
 use App\Http\Controllers\Karyawan\JadwalKaryawanController; 
+use App\Http\Controllers\Karyawan\JadwalCetakController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -93,17 +94,22 @@ Route::prefix('karyawan')->name('karyawan.')->group(function () {
         Route::post('jadwal', [JadwalKaryawanController::class, 'storeJadwal'])->name('jadwal.store');
         Route::post('kelas', [JadwalKaryawanController::class, 'storeKelas'])->name('kelas.store');
         Route::put('jadwal/{id}', [JadwalKaryawanController::class, 'update'])->name('jadwal.update');
-        Route::get('jadwal/{id}/edit', [JadwalKaryawanController::class, 'edit'])->name('jadwal.edit');
         Route::delete('jadwal/{id}', [JadwalKaryawanController::class, 'destroy'])->name('jadwal.destroy');
-        Route::get('jadwal/{id}/cetak', [JadwalKaryawanController::class, 'cetak'])->name('jadwal.cetak');
         Route::get('jadwal/{id}/json', [JadwalKaryawanController::class, 'getJadwalJson'])->name('jadwal.json');
         Route::get('jadwal/{id}/edit-dosen', [JadwalKaryawanController::class, 'editDosen'])->name('jadwal.editDosen');
         Route::post('jadwal/{id}/update-dosen', [JadwalKaryawanController::class, 'updateDosen'])->name('jadwal.updateDosen');
-        // Rute untuk live search
         Route::get('search/ruang', [JadwalKaryawanController::class, 'searchRuang'])->name('ruang.search');
         Route::get('search/matakuliah', [JadwalKaryawanController::class, 'searchMatakuliah'])->name('matakuliah.search');
         Route::get('search/dosen', [JadwalKaryawanController::class, 'searchDosen'])->name('dosen.search');
         Route::post('logout', [KaryawanLoginController::class, 'destroy'])->name('logout');
+    });
+    Route::prefix('cetak')->name('cetak.')->group(function() {
+        Route::get('jadwal-keseluruhan', [JadwalCetakController::class, 'jadwalKeseluruhan'])->name('jadwalKeseluruhan');
+        Route::get('frs', [JadwalCetakController::class, 'frs'])->name('frs');
+        Route::get('jadwal-dosen', [JadwalCetakController::class, 'jadwalDosen'])->name('jadwalDosen');
+        Route::get('jadwal-per-ruang', [JadwalCetakController::class, 'jadwalPerRuang'])->name('jadwalPerRuang');
+        Route::get('daftar-hadir/{jadwal}', [JadwalCetakController::class, 'daftarHadir'])->name('daftarHadir');
+        Route::get('kursi-uas/{jadwal}', [JadwalCetakController::class, 'kursiUAS'])->name('kursiUAS');
     });
 });
 

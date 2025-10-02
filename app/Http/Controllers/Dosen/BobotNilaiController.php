@@ -16,8 +16,6 @@ class BobotNilaiController extends Controller
     {
         $jadwal = Jadwal::findOrFail($jadwalId);
 
-        // Ambil detail informasi jadwal yang dipilih untuk ditampilkan di header
-        // Menggunakan join untuk mengambil Nama Prodi dari tabel prodi
         $detailJadwal = DB::table('jadwal as j')
             ->join('prodi as p', 'j.ProdiID', '=', 'p.ProdiID')
             ->where('j.JadwalID', $jadwal->JadwalID)
@@ -33,9 +31,6 @@ class BobotNilaiController extends Controller
         ]);
     }
 
-    /**
-     * Menyimpan (update) data bobot penilaian ke database.
-     */
     public function update(Request $request, $jadwalId)
     {
         $jadwal = Jadwal::findOrFail($jadwalId);

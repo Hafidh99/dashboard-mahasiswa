@@ -31,7 +31,6 @@
             </main>
         </div>
 
-        {{-- Tambahkan stack ini untuk menampung script dari halaman lain --}}
         @stack('scripts')
     </body>
 </html>

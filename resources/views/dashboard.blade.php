@@ -61,7 +61,7 @@
 
                 </div>
 
-                <!-- ========== KOLOM KANAN (YANG HILANG) ========== -->
+                <!-- ========== KOLOM KANAN ========== -->
                 <div class="md:col-span-2 space-y-6">
                     
                     <!-- Form Edit Profil -->

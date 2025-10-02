@@ -27,7 +27,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'MhswID' => ['required', 'string'], // Ganti 'email' menjadi 'MhswID'
+            'MhswID' => ['required', 'string'], 
             'password' => ['required', 'string'],
         ];
     }
@@ -45,7 +45,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'MhswID' => __('auth.failed'), // Ganti 'email' menjadi 'MhswID'
+                'MhswID' => __('auth.failed'), 
             ]);
         }
 

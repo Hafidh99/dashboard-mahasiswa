@@ -1,12 +1,10 @@
 <x-app-layout>
-    {{-- Bagian ini akan disembunyikan saat mencetak --}}
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight print:hidden">
             {{ __('Cetak Kartu Hasil Studi (KHS)') }}
         </h2>
     </x-slot>
 
-    {{-- CSS khusus untuk print (dengan perbaikan) --}}
     <style>
         @media print {
             body * {
@@ -42,7 +40,7 @@
             #print-area thead {
                 background-color: transparent !important;
             }
-             #print-area tfoot {
+            #print-area tfoot {
                 background-color: transparent !important;
             }
         }

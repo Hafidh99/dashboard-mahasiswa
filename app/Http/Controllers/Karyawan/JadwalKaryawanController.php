@@ -46,7 +46,7 @@ class JadwalKaryawanController extends Controller
             if ($request->filled('filter_mk')) {
                 $query->where(function ($q) use ($request) {
                     $q->where('j.Nama', 'like', '%' . $request->filter_mk . '%')
-                      ->orWhere('j.MKKode', 'like', '%' . $request->filter_mk . '%');
+                    ->orWhere('j.MKKode', 'like', '%' . $request->filter_mk . '%');
                 });
             }
             if ($request->filled('semester_mk')) {
@@ -61,7 +61,7 @@ class JadwalKaryawanController extends Controller
                 'k.Nama as NamaKelasDariRelasi'
             )
             ->orderBy('j.HariID', 'asc')
-            ->orderBy('j.JadwalID', 'asc') // Sudah diubah sebelumnya
+            ->orderBy('j.JadwalID', 'asc') 
             ->get();
             
             if ($jadwal->isNotEmpty()) {
@@ -75,25 +75,22 @@ class JadwalKaryawanController extends Controller
                     ->get()
                     ->groupBy('JadwalID');
 
-                // Logika ini sekarang menjadi sangat penting:
                 // Menggabungkan Dosen Utama dari tabel 'jadwal' dengan Tim Dosen dari 'jadwaldosen' untuk ditampilkan.
                 foreach ($jadwal as $j) {
                     $teamForJadwal = $teamDosen->get($j->JadwalID, collect());
                     $teamDosenIds = $teamForJadwal->pluck('DosenID');
 
-                    // Jika dosen utama ada tapi tidak ada di daftar tim (sekarang selalu terjadi), tambahkan
                     if ($j->DosenID && !$teamDosenIds->contains($j->DosenID)) {
                         $mainLecturer = (object) [
                             'JadwalID' => $j->JadwalID,
                             'DosenID' => $j->DosenID,
                             'Nama' => $j->NamaDosen,
                             'Gelar' => $j->Gelar,
-                            'JenisDosenID' => 'DSN' // Anggap sebagai Dosen Utama
+                            'JenisDosenID' => 'DSN' 
                         ];
                         $teamForJadwal->prepend($mainLecturer);
                     }
-                    
-                    // Urutkan ulang untuk memastikan Dosen Utama (DSN) selalu di atas
+
                     $sortedTeam = $teamForJadwal->sortByDesc(function ($dosen) {
                         return $dosen->JenisDosenID === 'DSN';
                     });
@@ -115,7 +112,7 @@ class JadwalKaryawanController extends Controller
             }
         }
 
-        return view('Karyawan.Jadwal.index', [ // Pastikan path view sudah benar
+        return view('Karyawan.Jadwal.index', [ 
             'semuaTahun' => $semuaTahun,
             'semuaProdi' => $semuaProdi,
             'semuaProgram' => $semuaProgram,
@@ -169,7 +166,7 @@ class JadwalKaryawanController extends Controller
         $data = DB::table('ruang')
             ->where(function($q) use ($query) {
                 $q->where('RuangID', 'LIKE', "%{$query}%")
-                  ->orWhere('Nama', 'LIKE', "%{$query}%");
+                ->orWhere('Nama', 'LIKE', "%{$query}%");
             })
             ->where('NA', 'N')
             ->limit(10)
@@ -215,9 +212,6 @@ class JadwalKaryawanController extends Controller
         return response()->json($data);
     }
     
-    /**
-     * PERUBAHAN LOGIKA PENYIMPANAN JADWAL BARU
-     */
     public function storeJadwal(Request $request)
     {
         $request->validate([
@@ -240,7 +234,7 @@ class JadwalKaryawanController extends Controller
                 'MKKode'            => $matakuliah->MKKode,
                 'Nama'              => $matakuliah->Nama,
                 'SKS'               => $matakuliah->SKS,
-                'DosenID'           => $request->dosen_id, // Hanya set dosen utama di tabel jadwal
+                'DosenID'           => $request->dosen_id, 
                 'HariID'            => $request->hari_id,
                 'JamMulai'          => $request->jam_mulai,
                 'JamSelesai'        => $request->jam_selesai,
@@ -257,11 +251,7 @@ class JadwalKaryawanController extends Controller
                 'TglSurat'          => now(), 
             ];
 
-            // Hanya insert ke tabel 'jadwal'.
             DB::table('jadwal')->insert($dataJadwal);
-
-            // DIHAPUS: Blok kode untuk insert ke 'jadwaldosen' sudah tidak diperlukan di sini.
-            // Tim dosen akan ditambahkan nanti melalui fitur "Edit Tim Dosen".
 
             DB::commit(); 
         } catch (Exception $e) {
@@ -306,7 +296,7 @@ class JadwalKaryawanController extends Controller
                 'MKKode' => $matakuliah->MKKode,
                 'Nama' => $matakuliah->Nama,
                 'SKS' => $matakuliah->SKS,
-                'DosenID' => $request->dosen_id, // Update dosen utama di tabel jadwal
+                'DosenID' => $request->dosen_id,
                 'HariID' => $request->hari_id,
                 'JamMulai' => $request->jam_mulai,
                 'JamSelesai' => $request->jam_selesai,
@@ -326,9 +316,6 @@ class JadwalKaryawanController extends Controller
             ];
     
             DB::table('jadwal')->where('JadwalID', $id)->update($dataToUpdate);
-    
-            // Saat update jadwal, kita asumsikan dosen utama juga diupdate di tim.
-            // Logika tim dosen lebih baik diatur di fungsi updateDosen()
     
             DB::commit();
     
@@ -393,11 +380,10 @@ class JadwalKaryawanController extends Controller
                 ->select('Login as DosenID', 'Nama', 'Gelar')
                 ->first();
             if ($dosenUtama) {
-                $dosenUtama->JenisDosenID = 'DSN'; // Tandai sebagai Dosen Utama
+                $dosenUtama->JenisDosenID = 'DSN'; 
             }
         }
-        
-        // Gabungkan Dosen Utama dengan Tim Dosen
+
         $semuaDosen = $timDosen->prepend($dosenUtama)->filter();
 
         $hariMap = [ 1 => 'Senin', 2 => 'Selasa', 3 => 'Rabu', 4 => 'Kamis', 5 => 'Jumat', 6 => 'Sabtu', 7 => 'Minggu' ];
@@ -408,10 +394,7 @@ class JadwalKaryawanController extends Controller
             'timDosen' => $semuaDosen,
         ]);
     }
-    
-    /**
-     * PERUBAHAN LOGIKA UPDATE TIM DOSEN
-     */
+
     public function updateDosen(Request $request, $id)
     {
         $request->validate([
@@ -430,25 +413,25 @@ class JadwalKaryawanController extends Controller
 
         DB::beginTransaction();
         try {
-            // LANGKAH 1: Set/Update Dosen Utama di tabel 'jadwal'
+            // Set/Update Dosen Utama di tabel 'jadwal'
             DB::table('jadwal')->where('JadwalID', $id)->update(['DosenID' => $dosenUtamaId]);
 
-            // LANGKAH 2: Hapus semua tim dosen lama dari 'jadwaldosen' untuk jadwal ini
+            // Hapus semua tim dosen lama dari 'jadwaldosen' untuk jadwal ini
             DB::table('jadwaldosen')->where('JadwalID', $id)->delete();
 
-            // LANGKAH 3: Filter untuk mendapatkan ID tim dosen (semua ID kecuali dosen utama)
+            // Filter untuk mendapatkan ID tim dosen (semua ID kecuali dosen utama)
             $teamDosenIds = array_filter($dosenIds, function($dosenId) use ($dosenUtamaId) {
                 return $dosenId != $dosenUtamaId;
             });
 
-            // LANGKAH 4: Jika ada anggota tim, insert mereka ke 'jadwaldosen'
+            // Jika ada anggota tim, insert mereka ke 'jadwaldosen'
             if (!empty($teamDosenIds)) {
                 $dataToInsert = [];
                 foreach ($teamDosenIds as $dosenId) {
                     $dataToInsert[] = [
                         'JadwalID' => $id,
                         'DosenID' => $dosenId,
-                        'JenisDosenID' => 'DSC', // Semua anggota tim sekarang adalah 'DSC'
+                        'JenisDosenID' => 'DSC', 
                         'TglBuat' => now(),
                         'LoginBuat' => $loginBuat,
                     ];

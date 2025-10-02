@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Pastikan pageData ada, jika tidak, hentikan eksekusi script.
     if (typeof window.pageData === 'undefined') {
         console.error('Error: pageData object not found. Pastikan script di file Blade sudah benar.');
         return;
@@ -164,12 +163,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function liveSearch(query, url, resultsContainer, rowBuilder, headers = []) {
-        if (query.length < 2) { // Minimal 2 karakter untuk mulai mencari
+        if (query.length < 2) { 
             resultsContainer.innerHTML = '';
             return;
         }
 
-        // Menambahkan parameter 'query' ke URL dengan benar
         const finalUrl = url.includes('?') ? `${url}&query=${query}` : `${url}?query=${query}`;
 
         fetch(finalUrl)
@@ -322,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.target.classList.contains('remove-dosen-btn')) {
             e.target.closest('[data-dosen-id]').remove();
             if (dosenListContainer.children.length === 0) {
-                 dosenListContainer.innerHTML = '<p class="text-gray-400 italic text-sm">Belum ada dosen di tim ini.</p>';
+                dosenListContainer.innerHTML = '<p class="text-gray-400 italic text-sm">Belum ada dosen di tim ini.</p>';
             } else {
                 const firstRadio = dosenListContainer.querySelector('input[type="radio"]');
                 if (firstRadio && !dosenListContainer.querySelector('input[type="radio"]:checked')) {
@@ -376,5 +374,16 @@ document.addEventListener('DOMContentLoaded', function () {
         if (event.target == cariDosenModal) cariDosenModal.style.display = "none";
         if (event.target == editDosenModal) editDosenModal.style.display = "none";
     }
+    
+    window.pageData = {
+        routes: {
+            searchRuang: '{{ route("karyawan.ruang.search") }}', 
+            searchMk: '{{ route("karyawan.matakuliah.search") }}',
+            searchDosen: '{{ route("karyawan.dosen.search") }}',
+            getDosenTeam: '{{ url("karyawan/jadwal") }}/{jadwalId}/edit-dosen', 
+            updateDosenTeam: '{{ url("karyawan/jadwal") }}/{jadwalId}/update-dosen'
+        },
+        currentProdiId: '{{ $input["prodi_id"] ?? "" }}'
+    };
 });
 

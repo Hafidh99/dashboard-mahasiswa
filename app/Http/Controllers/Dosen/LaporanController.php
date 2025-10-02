@@ -10,10 +10,6 @@ use PDF;
 
 class LaporanController extends Controller
 {
-    /**
-     * Membuat PDF Rekapitulasi Absensi Mahasiswa.
-     * Terhubung dengan tombol "Rekap Absen".
-     */
     public function rekapAbsenMahasiswa(Jadwal $jadwal)
     {
         // 1. Ambil detail jadwal
@@ -58,10 +54,6 @@ class LaporanController extends Controller
         ]);
     }
 
-    /**
-     * Membuat PDF Rekapan Presensi Dosen.
-     * Terhubung dengan tombol "Batas Absen".
-     */
     public function rekapPresensiDosen(Jadwal $jadwal)
     {
         // 1. Ambil detail jadwal

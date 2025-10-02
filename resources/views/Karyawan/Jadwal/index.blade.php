@@ -41,7 +41,6 @@
             <!-- Filter Form -->
             <form action="{{ route('karyawan.jadwal.index') }}" method="GET" class="mb-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 border rounded-md bg-gray-50">
-                    {{-- Baris 1 --}}
                     <div>
                         <label for="tahun_id" class="block text-sm font-medium text-gray-700">Tahun Akd:</label>
                         <select name="tahun_id" id="tahun_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -75,8 +74,6 @@
                         </select>
                     </div>
                     <div></div>
-
-                    {{-- Baris 2 --}}
                     <div>
                         <label for="hari_id" class="block text-sm font-medium text-gray-700">Hari:</label>
                         <select name="hari_id" id="hari_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -107,8 +104,6 @@
                         <label for="semester_mk" class="block text-sm font-medium text-gray-700">Semester MK:</label>
                         <input type="text" name="semester_mk" id="semester_mk" value="{{ $input['semester_mk'] ?? '' }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm" placeholder="Contoh: 1">
                     </div>
-
-                    {{-- Baris 3 - Tombol --}}
                     <div class="col-span-full flex items-center space-x-2 pt-2">
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
                             Kirim Parameter
@@ -116,16 +111,27 @@
                         <a href="{{ route('karyawan.jadwal.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded text-sm">
                             Reset Parameter
                         </a>
-                        <span class="border-l border-gray-400 h-6"></span>
-                        <button type="button" id="tambahJadwalBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm">
-                            Tambah Jadwal
-                        </button>
-                        <button type="button" id="tambahKelasBtn" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded text-sm">
-                            Tambah Kelas
-                        </button>
                     </div>
                 </div>
             </form>
+
+            @if(!$jadwalDikelompokkan->isEmpty())
+                <div class="my-4 p-4 border rounded-md bg-gray-50 flex flex-wrap gap-2 items-center">
+                    <a href="{{ route('karyawan.cetak.jadwalKeseluruhan', $input) }}" target="_blank" class="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded text-sm">Cetak Jadwal</a>
+                    <a href="{{ route('karyawan.cetak.frs', $input) }}" target="_blank" class="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded text-sm">Cetak FRS</a>
+                    <a href="{{ route('karyawan.cetak.jadwalDosen', $input) }}" target="_blank" class="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded text-sm">Cetak Jadwal Dosen</a>
+                    <a href="{{ route('karyawan.cetak.jadwalPerRuang', $input) }}" target="_blank" class="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded text-sm">Cetak Jadwal Per Ruang</a>
+                    
+                    <span class="border-l border-gray-400 h-6 mx-2"></span>
+                    <button type="button" id="tambahJadwalBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm">
+                        Tambah Jadwal
+                    </button>
+                    <button type="button" id="tambahKelasBtn" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded text-sm">
+                        Tambah Kelas
+                    </button>
+                </div>
+            @endif
+
 
             <!-- Tabel Hasil Jadwal -->
             <div class="mt-6">
@@ -197,8 +203,8 @@
                                             </div>
                                         </td>
                                         <td class="px-2 py-2 whitespace-nowrap align-top text-center">
-                                            <a href="{{ route('karyawan.jadwal.cetak', $jadwal->JadwalID) }}" class="block text-blue-600 hover:text-blue-900 font-medium text-xs" title="Cetak Daftar Hadir">Daftar</a>
-                                            <a href="#" class="block text-blue-600 hover:text-blue-900 font-medium text-xs" title="Cetak Kursi UAS">Kursi UAS</a>
+                                            <a href="{{ route('karyawan.cetak.daftarHadir', ['jadwal' => $jadwal->JadwalID]) }}" target="_blank" class="block text-blue-600 hover:text-blue-900 font-medium text-xs" title="Cetak Daftar Hadir">Daftar</a>
+                                            <a href="{{ route('karyawan.cetak.kursiUAS', ['jadwal' => $jadwal->JadwalID]) }}" target="_blank" class="block text-blue-600 hover:text-blue-900 font-medium text-xs" title="Cetak Kursi UAS">Kursi UAS</a>
                                         </td>
                                         <td class="px-2 py-2 whitespace-nowrap align-top text-center">
                                             <div class="flex items-center justify-center space-x-2">
@@ -239,18 +245,6 @@
 @endsection
 
 @push('scripts')
-<script>
-    window.pageData = {
-        routes: {
-            searchRuang: '{{ route("karyawan.ruang.search") }}', 
-            searchMk: '{{ route("karyawan.matakuliah.search") }}',
-            searchDosen: '{{ route("karyawan.dosen.search") }}',
-            getDosenTeam: '{{ url("karyawan/jadwal") }}/{jadwalId}/edit-dosen', 
-            updateDosenTeam: '{{ url("karyawan/jadwal") }}/{jadwalId}/update-dosen'
-        },
-        currentProdiId: '{{ $input["prodi_id"] ?? "" }}'
-    };
-</script>
 <script src="{{ asset('js/jadwal-search.js') }}"></script>
 @endpush
 

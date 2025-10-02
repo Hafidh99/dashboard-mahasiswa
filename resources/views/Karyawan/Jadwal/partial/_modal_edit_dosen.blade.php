@@ -1,6 +1,4 @@
-{{-- =================================================== --}}
-{{-- BARU: Modal untuk Edit Tim Dosen --}}
-{{-- =================================================== --}}
+{{-- Modal untuk Edit Tim Dosen --}}
 <div id="editDosenModal" class="fixed inset-0 bg-gray-800 bg-opacity-60 overflow-y-auto h-full w-full hidden z-30">
     <div class="relative top-10 mx-auto p-5 border w-full max-w-3xl shadow-lg rounded-md bg-white">
         <div class="flex justify-between items-center border-b pb-3">
@@ -22,13 +20,12 @@
             <!-- Daftar Dosen Saat Ini -->
             <h4 class="font-semibold mb-2">Tim Dosen Saat Ini:</h4>
             <div id="dosenModal_list" class="space-y-2 mb-6 border rounded-md p-3 min-h-[50px]">
-                {{-- Daftar dosen akan diisi oleh JavaScript di sini --}}
             </div>
 
             <!-- Form Tambah Dosen -->
             <div class="border-t pt-4">
                 <h4 class="font-semibold mb-2">Tambah Dosen Baru:</h4>
-                 <div class="flex items-center">
+                <div class="flex items-center">
                     <input type="text" id="dosenModal_add_display_input" class="block w-full bg-gray-100 rounded-l-md border-gray-300 shadow-sm text-sm" readonly placeholder="Klik 'Cari...' untuk memilih dosen">
                     <button type="button" id="dosenModal_cariDosenBtn" class="px-3 py-2 bg-gray-200 text-gray-700 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-300">Cari...</button>
                 </div>

@@ -153,7 +153,6 @@
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
-                                            {{-- PERBAIKAN: Looping menggunakan $riwayatStudi --}}
                                             @forelse($riwayatStudi as $index => $item)
                                             <tr>
                                                 <td class="px-4 py-2 text-sm">Semester {{ $item->Sesi }} ({{ $item->TahunID }})</td>

@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Times New Roman', Times, serif;
-            background-color: #f3f4f6; /* Memberi background abu-abu seperti print preview */
+            background-color: #f3f4f6; 
         }
         .container {
             width: 21cm;
@@ -22,11 +22,10 @@
             width: 100%;
             border-collapse: collapse;
         }
-        /* PERBAIKAN: Font dan padding diperkecil */
         th, td {
             border: 1px solid black;
             padding: 2px 5px;
-            font-size: 9.5pt; /* Ukuran font lebih kecil */
+            font-size: 9.5pt; 
             vertical-align: top;
         }
         th {
@@ -35,7 +34,7 @@
         }
         .info-table td {
             border: none;
-            padding: 0px 4px; /* Padding lebih kecil */
+            padding: 0px 4px; 
             font-size: 9.5pt;
         }
         .summary-table td {
@@ -65,7 +64,7 @@
             }
             @page {
                 size: A4;
-                margin: 1.5cm; /* Margin diperkecil agar lebih muat */
+                margin: 1.5cm; 
             }
         }
     </style>
@@ -75,7 +74,7 @@
     <div class="container">
         <!-- KOP SURAT -->
         <div class="flex items-start justify-center border-b-2 border-black pb-2 mb-2">
-            <img src="{{ asset('storage/UHTP.png') }}" alt="Logo Universitas" class="h-20 mr-4"> <!-- Logo sedikit lebih kecil -->
+            <img src="{{ asset('storage/UHTP.png') }}" alt="Logo Universitas" class="h-20 mr-4"> 
             <div class="text-center">
                 <p class="text-base font-bold">UNIVERSITAS HANG TUAH PEKANBARU</p>
                 <p class="text-xs">Jl. Mustafa Sari No. 05 Tangkerang Selatan, Telp. (0761) 33815 Fax. (0761) 863646</p>

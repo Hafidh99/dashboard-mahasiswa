@@ -130,7 +130,6 @@ class KhsController extends Controller
     {
         $mahasiswa = Auth::user()->load('prodi');
 
-        // Ambil semua KHS ID milik mahasiswa
         $khsIds = DB::table('khs')
             ->where('MhswID', $mahasiswa->MhswID)
             ->pluck('KHSID');
@@ -140,7 +139,6 @@ class KhsController extends Controller
             $transkripLengkap = DB::table('krs')
                 ->join('khs', 'krs.KHSID', '=', 'khs.KHSID')
                 ->whereIn('krs.KHSID', $khsIds)
-                // PERBAIKAN DI SINI: Memberi tahu database untuk menggunakan kolom NA dari tabel krs
                 ->where('krs.NA', 'N') 
                 ->select(
                     'krs.MKKode', 
@@ -160,12 +158,11 @@ class KhsController extends Controller
         $totalMutu = $transkripLengkap->sum('Mutu');
         $ipk = ($totalSks > 0) ? $totalMutu / $totalSks : 0;
 
-        // Data tambahan (gunakan data asli jika ada di database Anda)
         $dataWisuda = [
-            'tanggalMasuk' => '2020-09-01', // Placeholder
-            'tanggalLulus' => '2024-08-20', // Placeholder
-            'predikat' => 'Sangat Memuaskan', // Placeholder
-            'judulSkripsi' => 'ANALISIS FAKTOR-FAKTOR YANG MEMPENGARUHI KINERJA AKADEMIK MAHASISWA FAKULTAS KESEHATAN MASYARAKAT', // Placeholder
+            'tanggalMasuk' => '2020-09-01', 
+            'tanggalLulus' => '2024-08-20', 
+            'predikat' => 'Sangat Memuaskan', 
+            'judulSkripsi' => 'ANALISIS FAKTOR-FAKTOR YANG MEMPENGARUHI KINERJA AKADEMIK MAHASISWA FAKULTAS KESEHATAN MASYARAKAT',
         ];
 
         // Kirim data ke view khusus cetak

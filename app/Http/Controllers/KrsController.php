@@ -11,7 +11,6 @@ use App\Models\Khs;
 
 class KrsController extends Controller
 {
-    // ... (metode isi(), ambil(), simpan(), lihat(), hapus() tidak perlu diubah) ...
     public function isi()
     {
         $mahasiswa = Auth::user();
@@ -197,11 +196,6 @@ class KrsController extends Controller
         ]);
     }
 
-    /**
-     * =================================================================
-     * === PERUBAHAN UTAMA ADA DI METHOD INI ===
-     * =================================================================
-     */
     public function cetak(Request $request)
     {
         $mahasiswa = Auth::user()->load('prodi', 'pembimbingAkademik');
@@ -215,7 +209,7 @@ class KrsController extends Controller
         $krsDetail = collect();
         $tahunSemester = null;
         $totalSks = 0;
-        $krsDisetujui = false; // Inisialisasi variabel
+        $krsDisetujui = false; 
 
         if ($selectedSemester) {
             $khsInfo = DB::table('khs')
@@ -247,7 +241,6 @@ class KrsController extends Controller
                 
                 $totalSks = $krsDetail->sum('SKS');
                 
-                // === LOGIKA BARU DITAMBAHKAN DI SINI ===
                 // Cek apakah ada satu saja matkul yang sudah disetujui ('Y')
                 $krsDisetujui = $krsDetail->contains('aprv_pa', 'Y');
             }
@@ -260,7 +253,7 @@ class KrsController extends Controller
             'tahunSemester' => $tahunSemester,
             'krsDetail' => $krsDetail,
             'totalSks' => $totalSks,
-            'krsDisetujui' => $krsDisetujui, // Kirim variabel ini ke view
+            'krsDisetujui' => $krsDisetujui, 
         ]);
     }
     

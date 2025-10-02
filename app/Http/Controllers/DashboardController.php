@@ -45,12 +45,7 @@ class DashboardController extends Controller
         }
         $ipkFinal = ($kumulatifSks > 0) ? number_format($kumulatifBobot / $kumulatifSks, 2) : 0;
         $semesterBerjalan = DB::table('khs')->where('MhswID', $mahasiswa->MhswID)->max('Sesi');
-
-        // =================================================================
-        // LANGKAH 1: TAMBAHKAN SATU BARIS INI
-        // Mengambil data KHS dari relasi yang sudah di-load untuk tabel keuangan
         $riwayatNilai = $mahasiswa->khs->sortBy('Sesi');
-        // =================================================================
 
 
         return view('dashboard', [
@@ -61,7 +56,6 @@ class DashboardController extends Controller
             'dataIPS' => $dataIPS,
             'dataIPK' => $dataIPK,
             'dosens' => $dosens,
-            // LANGKAH 2: TAMBAHKAN VARIABEL BARU DI SINI
             'riwayatNilai' => $riwayatNilai,
         ]);
     }
